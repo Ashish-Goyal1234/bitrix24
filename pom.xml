@@ -1,0 +1,216 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>bitrix24</groupId>
+	<artifactId>bitrix24</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>bitrix24</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<timestamp>${maven.build.timestamp}</timestamp>   <!-- Need to use for setting time in postman plugin -->
+		<maven.build.timestamp.format>dd-MM-yyyy</maven.build.timestamp.format>
+	</properties>
+
+
+
+	<build>
+		<finalName>container-test</finalName>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+
+			<!-- Used for executing testcases. I can tell this is my testNg.xml please 
+				run the testcases -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+				<configuration>
+					<suiteXmlFiles>
+						<suiteXmlFile>src/main/resources/testng.xml</suiteXmlFile>
+						<suiteXmlFile>src/main/resources/TestFileForCRMPage.xml</suiteXmlFile>
+					</suiteXmlFiles>
+				</configuration>
+			</plugin>
+
+			<!-- Used to compile the code for checking errros. It will Use JDK 1.8 
+				compiler -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.1</version>
+
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>
+								${project.build.directory}/libs
+							</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+
+			<!-- Post-Man plugin : Used to send email fr report after execution <plugin> 
+				<groupId>ch.fortysix</groupId> <artifactId>maven-postman-plugin</artifactId> 
+				<version>0.1.6</version> <executions> <execution> <id>Report Generation</id> 
+				<phase>test</phase> <goals> <goal>send-mail</goal> </goals> <inherited>true</inherited> 
+				<configuration> <from>ashishstudy120@gmail.com</from> <subject>Test Automation 
+				Report</subject> <failonerror>false</failonerror> <htmlMessage> <![CDATA[ 
+				<p>New test build triggered!</p> <p>Please Find the Attached html file contains 
+				the test script execution status....!. This Mail is sent By Postman plugin</p> 
+				]]> </htmlMessage> <mailhost>smtp.gmail.com</mailhost> <mailport>465</mailport> 
+				<mailssl>true</mailssl> <mailAltConfig>true</mailAltConfig> <mailuser>ashishstudy120@gmail.com</mailuser> 
+				<mailpassword>Test@123</mailpassword> <receivers> <receiver>ashishg120@gmail.com</receiver> 
+				</receivers> <fileSets> <fileSet> <directory>${basedir}//extentReports//${timestamp}//</directory> 
+				<includes> Report file name <include>**/*.html</include> </includes> Use 
+				Regular Expressions like **/*.html if you want all the html files to send 
+				</fileSet> <fileSet> <directory>${basedir}//logs//${timestamp}//</directory> 
+				Above under properties tag I have setted timestamp <includes> <include>applog.log</include> 
+				</includes> Use Regular Expressions like **/*.html if you want all the html 
+				files to send </fileSet> </fileSets> </configuration> </execution> </executions> 
+				</plugin> -->
+
+
+		</plugins>
+	</build>
+
+
+
+
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>7.4.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.141.59</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>4.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.11.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.11.1</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
+		<dependency>
+			<groupId>com.aventstack</groupId>
+			<artifactId>extentreports</artifactId>
+			<version>4.0.9</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-email -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.5</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-scratchpad -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/openxml4j -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>openxml4j</artifactId>
+			<version>1.0-beta</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/com.github.seratch/jslack This 
+			dependency is used for slack -->
+
+		<dependency>
+			<groupId>com.github.seratch</groupId>
+			<artifactId>jslack</artifactId>
+			<version>3.4.2</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient 
+			This dependency is used for slack -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime 
+			This dependency is used for slack -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.5.13</version>
+		</dependency>
+
+
+
+
+
+
+	</dependencies>
+</project>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="CRMPage">
+	<listeners>
+	
+		<listener class-name="org.bitrix.listeners.SuiteListener" />
+		<listener class-name="org.bitrix.listeners.TestListener" />
+		<listener class-name="org.bitrix.listeners.ExecutionListener" />
+	</listeners>
+
+	<test name="Chrome Test">
+		<classes>
+			<class name="org.bitrix24.login.LoginTest" />
+			<class name="org.bitrix24.crm.ContactsTest" />
+			<class name="org.bitrix24.logout.LogoutTest"></class>
+		</classes>
+	</test>
+</suite>

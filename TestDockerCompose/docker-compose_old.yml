@@ -1,0 +1,39 @@
+# To execute this docker-compose yml file use `docker-compose -f docker-compose-v3.yml up`
+# Add the `-d` flag at the end for detached execution
+# To stop the execution, hit Ctrl+C, and then `docker-compose -f docker-compose-v3.yml down`
+ version: "3"                                   # specify docker compose version
+ services:                                      # Define services / Container to be run.
+    selenium-hub:                               # Name of first service
+        image: selenium/hub
+        container_name: selenium-hubashish
+        ports:
+            - "4444:4444"                       # Selenium hub used default port 4444
+            - "5900:5900"                       # The port 5900 is the default port used by VNC server (Optional Port) 
+                                                # (Right side is application port and left side is our local machine port)
+    
+    chrome:                                     # name of second service
+        image: selenium/node-chrome-debug
+        volumes:                                # used for effectively utilization of shared memory.
+            - /dev/shm:/dev/shm
+        depends_on:
+            - selenium-hub
+        ports:
+            - "4545:4444"                       # Right side is always hub node and I am registering my local host port 4545 to 4444.  (Optional Port)
+            - "5901:5900"                       # Right side port is VNC viewer port and I am registerng my local host port 5901 to 5900. (Optional Port)
+        environment:
+            - HUB_HOST=selenium-hub
+            - HUB_PORT=4444
+    
+    
+    firefoxnode:                                   # Name of third service
+        image: selenium/node-firefox-debug
+        volumes:                                   # used for effectively utilization of shared memory.
+            - /dev/shm:/dev/shm
+        depends_on:
+            - selenium-hub
+        ports:
+           - "4546:4444"                           # Right side is always hub node and I am registering my local host port 4546 to 4444.  (Optional Port)
+           - "5902:5900"                           # Right side port is VNC viewer port and I am registerng my local host port 5902 to 5900.  (Optional Port)
+        environment:
+            - HUB_HOST=selenium-hub
+            - HUB_PORT=4444
